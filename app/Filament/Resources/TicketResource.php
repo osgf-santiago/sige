@@ -74,12 +74,12 @@ class TicketResource extends Resource
                                     ->default('bajo')
                                     ->required(),
 
-                                Forms\Components\Select::make('urgency')
+                                Forms\Components\Select::make('urgencia')
                                     ->options(['bajo' => 'Bajo', 'medio' => 'Medio', 'alto' => 'Alto'])
                                     ->default('bajo')
                                     ->required(),
 
-                                Forms\Components\Select::make('asignado')
+                                Forms\Components\Select::make('assigned_to')
                                     ->label('Técnico Asignado')
                                     ->relationship('agent', 'name')
                                     ->searchable()
@@ -103,7 +103,7 @@ class TicketResource extends Resource
                         'warning' => 'alto',
                         'danger' => 'critico',
                     ]),
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\BadgeColumn::make('estatus')
                     ->colors([
                         'primary' => 'nuevo',
                         'warning' => 'abierto',

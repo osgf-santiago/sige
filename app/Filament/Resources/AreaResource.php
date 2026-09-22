@@ -16,7 +16,9 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class AreaResource extends Resource
 {
     protected static ?string $model = Area::class;
-
+    protected static ?string $navigationLabel = 'Áreas';
+    protected static ?string $modelLabel = 'Área';
+    protected static ?string $pluralModelLabel = 'Todas las Áreas';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -116,7 +118,7 @@ class AreaResource extends Resource
 
                 // Filtro por Tipo de Área
                 Tables\Filters\SelectFilter::make('tipo')
-                    ->label('Tipo de Área')
+                    ->label('Tipo de área')
                     ->options([
                         'Administrativa' => 'Administrativa',
                         'Operaciones' => 'Operaciones',

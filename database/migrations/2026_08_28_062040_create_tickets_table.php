@@ -19,8 +19,8 @@ return new class extends Migration
 
             $table->string('categoria'); // Ej: Hardware, Software, Redes
             $table->enum('impacto', ['bajo', 'medio', 'alto'])->default('bajo');
-            $table->enum('urgency', ['bajo', 'medio', 'alto'])->default('bajo');
-            $table->enum('priority', ['bajo', 'medio', 'alto', 'critico'])->default('bajo');
+            $table->enum('urgencia', ['bajo', 'medio', 'alto'])->default('bajo');
+            $table->enum('prioridad', ['bajo', 'medio', 'alto', 'critico'])->default('bajo');
             $table->enum('estatus', ['nuevo', 'abierto', 'pendiente', 'resuelto', 'cerrado', 'cancelado'])->default('nuevo');
 
             $table->text('reporte');

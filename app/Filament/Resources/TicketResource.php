@@ -6,10 +6,16 @@ use App\Filament\Resources\TicketResource\Pages;
 use App\Filament\Resources\TicketResource\RelationManagers;
 use App\Models\Ticket;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Group;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
@@ -18,15 +24,15 @@ class TicketResource extends Resource
 {
     protected static ?string $model = \App\Models\Ticket::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-folder';
 
-    public static function form(Form $form): Form
+   public static function form(Schema $schema): Schema
     {
-        return $form
-->schema([
-                Forms\Components\Group::make()
+        return $schema
+            ->schema([
+                Group::make()
                     ->schema([
-                        Forms\Components\Section::make('Información del Ticket')
+                        Section::make('Información del Ticket')
                             ->schema([
                                 Forms\Components\Select::make('area_id')
                                     ->relationship('area', 'nombre')
@@ -54,9 +60,9 @@ class TicketResource extends Resource
                             ])->columns(2),
                     ])->columnSpan(2),
 
-                Forms\Components\Group::make()
+                Group::make()
                     ->schema([
-                        Forms\Components\Section::make('Clasificación ITIL & Estado')
+                        Section::make('Clasificación ITIL & Estado')
                             ->schema([
                                 Forms\Components\Select::make('estatus')
                                     ->options([

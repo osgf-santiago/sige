@@ -6,11 +6,17 @@ use App\Filament\Resources\DocumentosResource\Pages;
 use App\Filament\Resources\DocumentosResource\RelationManagers;
 use App\Models\Documentos;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Forms\Components\FileUpload;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Actions\EditAction;
+use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Schemas\Components\Section;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -19,11 +25,11 @@ class DocumentosResource extends Resource
 {
     protected static ?string $model = Documentos::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-folder';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Forms\Components\Select::make('area_id')
                     ->relationship('area', 'nombre')
@@ -81,11 +87,16 @@ class DocumentosResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
+                Action::make('download')
+                ->label('Descargar')
+                ->color('primary')
+                ->url(fn ($record) => asset('/storage/' . $record->ruta_adjuntos)) // Ruta al archivo
+                ->openUrlInNewTab(), 
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }

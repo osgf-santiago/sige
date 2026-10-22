@@ -4,7 +4,7 @@ namespace App\Filament\Resources\TicketResource\RelationManagers;
 
 use App\Enums\TicketStatus;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -16,9 +16,9 @@ class HistoriesRelationManager extends RelationManager
 
     protected static ?string $title = 'Historial y Seguimiento';
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Forms\Components\Hidden::make('user_id')
                     ->default(fn () => Auth::id()),

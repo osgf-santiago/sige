@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateDocumentos extends CreateRecord
 {
     protected static string $resource = DocumentosResource::class;
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+
+    }
 }

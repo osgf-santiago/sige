@@ -44,6 +44,7 @@ class RequisicionResource extends Resource
         return [
             'index' => ListRequisicions::route('/'),
             'create' => CreateRequisicion::route('/create'),
+            'view' => Pages\ViewRequisicion::route('/{record}'),
             'edit' => EditRequisicion::route('/{record}/edit'),
         ];
     }

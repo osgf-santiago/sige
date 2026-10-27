@@ -40,18 +40,30 @@ class AreaResource extends Resource
                             ->maxLength(255)
                             ->placeholder('Ej. Recursos Humanos'),
 
-                        Forms\Components\TextInput::make('edificio')
+                        Forms\Components\Select::make('edificio')
                             ->label('Edificio')
-                            ->required()
-                            ->maxLength(255)
-                            ->placeholder('Ej. Edificio A'),
+                            ->options([
+                                'Contemporáneo' => 'Contemporáneo',
+                                'Histórico' => 'Histórico',
+                            ])
+                            ->default('Contemporáneo')
+                            ->required(),
 
-                        Forms\Components\TextInput::make('piso')
+                        Forms\Components\Select::make('piso')
                             ->label('Piso')
-                            ->required()
-                            ->maxLength(255)
-                            ->placeholder('Ej. Piso 3'),
-
+                            ->options([
+                                'Planta Baja' => 'Planta Baja',
+                                'Mezanine' => 'Mezanine',
+                                'Piso 1' => 'Piso 1',
+                                'Piso 2' => 'Piso 2',
+                                'Piso 3' => 'Piso 3',
+                                'Piso 4' => 'Piso 4',
+                                'Piso 5' => 'Piso 5',
+                                'Piso 6' => 'Piso 6',
+                            ])
+                            ->default('Planta Baja')
+                            ->required(),
+                            
                         Forms\Components\Select::make('tipo')
                             ->label('Tipo de Área')
                             ->options([

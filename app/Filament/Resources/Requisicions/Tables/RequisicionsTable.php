@@ -9,6 +9,7 @@ use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables;
+use Filament\Actions\ViewAction;
 use Filament\Tables\Table;
 
 class RequisicionsTable
@@ -39,6 +40,10 @@ class RequisicionsTable
             ])
             ->recordActions([
                 EditAction::make(),
+                ViewAction::make()
+                    ->label('Ver')
+                    ->icon('heroicon-o-eye')
+                    ->color('info'),    
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

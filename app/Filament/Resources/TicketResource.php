@@ -19,6 +19,7 @@ use Filament\Schemas\Components\Group;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class TicketResource extends Resource
 {
@@ -87,8 +88,9 @@ class TicketResource extends Resource
 
                                 Forms\Components\Select::make('assigned_to')
                                     ->label('Técnico Asignado')
-                                    ->relationship('agent', 'name')
+                                    ->options(User::where('role', 'Técnico')->pluck('name', 'id'))
                                     ->searchable()
+                                    ->preload()
                                     ->nullable(),
                             ]),
                     ])->columnSpan(1),

@@ -9,6 +9,8 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
+use Filament\Actions\CreateAction;
+use Filament\Actions\ViewAction;
 
 class HistoriesRelationManager extends RelationManager
 {
@@ -90,11 +92,11 @@ class HistoriesRelationManager extends RelationManager
             ])
             ->defaultSort('created_at', 'desc')
             ->headerActions([
-                Tables\Actions\CreateAction::make()
+                CreateAction::make()
                     ->label('Agregar Entrada'),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                ViewAction::make(),
             ]);
     }
 }

@@ -52,6 +52,7 @@ class AreaResource extends Resource
                         Forms\Components\Select::make('piso')
                             ->label('Piso')
                             ->options([
+                                'Piso -1' => 'Piso -1',
                                 'Planta Baja' => 'Planta Baja',
                                 'Mezanine' => 'Mezanine',
                                 'Piso 1' => 'Piso 1',

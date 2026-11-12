@@ -4,7 +4,7 @@ namespace App\Filament\Resources\Requisicions\Schemas;
 
 use Filament\Schemas\Schema;
 use Filament\Forms;
-
+use App\Models\Articulos;
 
 class RequisicionForm
 {
@@ -40,7 +40,28 @@ class RequisicionForm
                             ->searchable()
                             ->preload()
                             ->required()
+                            ->reactive()
+                            ->afterStateUpdated(function ($state, $set) {
+                                if ($state) {
+                                    $articulo = \App\Models\Articulos::find($state);
+                                    $set('unidad', $articulo?->unidad ?? ''); 
+                                } else {
+                                    $set('unidad', '');
+                                }
+                            })
                             ->columnSpan(2),
+                        Forms\Components\TextInput::make('unidad')
+                            ->label('Unidad')
+                            ->disabled()
+                            ->dehydrated()
+                            ->afterStateHydrated(function (Forms\Components\TextInput $component, $state, $get) {
+                                $articuloId = $get('articulo_id');
+                                if ($articuloId) {
+                                    $articulo = \App\Models\Articulos::find($articuloId);
+                                    $component->state($articulo?->unidad ?? '');
+                                }
+                            })
+                            ->columnSpan(1),
 
                         Forms\Components\TextInput::make('cantidad')
                             ->label('Cantidad')
@@ -49,7 +70,7 @@ class RequisicionForm
                             ->required()
                             ->columnSpan(1),
                     ])
-                    ->columns(3) 
+                    ->columns(4) 
                     ->defaultItems(1) 
                     ->addActionLabel('Agregar otro artículo')
                     ->reorderable(false)

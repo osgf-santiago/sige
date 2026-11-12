@@ -9,8 +9,9 @@ use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables;
-use Filament\Actions\ViewAction;
 use Filament\Tables\Table;
+use Filament\Actions\Action;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class RequisicionsTable
 {
@@ -40,10 +41,17 @@ class RequisicionsTable
             ])
             ->recordActions([
                 EditAction::make(),
-                ViewAction::make()
-                    ->label('Ver')
-                    ->icon('heroicon-o-eye')
-                    ->color('info'),    
+                Action::make('descargarPdf')
+                ->label('PDF')
+                ->color('success') // Color verde para diferenciarlo
+                ->icon('heroicon-o-arrow-down-tray')
+                ->action(function ($record) {
+                    $pdf = Pdf::loadView('filament.pages.requisicion', ['record' => $record]);
+                    
+                    return response()->streamDownload(function () use ($pdf) {
+                        echo $pdf->output();
+                    }, 'requisicion-' . $record->id . '.pdf');
+                }),  
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

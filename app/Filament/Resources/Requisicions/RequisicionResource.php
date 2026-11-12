@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class RequisicionResource extends Resource
 {
@@ -44,7 +45,6 @@ class RequisicionResource extends Resource
         return [
             'index' => ListRequisicions::route('/'),
             'create' => CreateRequisicion::route('/create'),
-            'view' => Pages\ViewRequisicion::route('/{record}'),
             'edit' => EditRequisicion::route('/{record}/edit'),
         ];
     }

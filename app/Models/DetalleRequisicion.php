@@ -15,6 +15,7 @@ class DetalleRequisicion extends Model
         'requisicion_id',
         'articulo_id',
         'cantidad',
+        'unidad',
     ];
       public function requisicion(): BelongsTo
     {

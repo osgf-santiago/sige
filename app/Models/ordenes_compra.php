@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 
-class Requisicion extends Model
+class ordenes_compra extends Model
 {
     use HasFactory;
     protected $table = 'ordenes_compras';

@@ -18,6 +18,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class RequisicionResource extends Resource
 {
     protected static ?string $model = Requisicion::class;
+    protected static ?string $navigationLabel = 'Requisiciones';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 

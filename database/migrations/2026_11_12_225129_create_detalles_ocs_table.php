@@ -18,8 +18,8 @@ return new class extends Migration
                   ->cascadeOnDelete();
             $table->integer('cantidad');
             $table->string('descripcion');
-            $table->double('precio_unitario');
-            $table->double('sub_total');
+            $table->decimal('precio_unitario');
+            $table->decimal('sub_total');
             $table->timestamps();
         });
     }

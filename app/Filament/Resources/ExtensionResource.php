@@ -21,7 +21,10 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class ExtensionResource extends Resource
 {
     protected static ?string $model = Extension::class;
+
     protected static ?string $navigationLabel = 'Extensiones';
+
+    protected static ?string $pluralModelLabel = 'Todas las extensiones';
 
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-folder';
 

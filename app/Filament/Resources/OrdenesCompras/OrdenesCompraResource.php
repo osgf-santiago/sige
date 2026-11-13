@@ -21,6 +21,8 @@ class OrdenesCompraResource extends Resource
 
     protected static ?string $navigationLabel = 'Ordenes de Compra';
 
+    protected static ?string $pluralModelLabel = 'Ordenes de Compra';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'ordenes_compra';

@@ -35,22 +35,21 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('role')
-                    ->options([
-                        'Usuario' => 'Usuario',
-                        'Técnico' => 'Técnico',
-                        'Admin' => 'Administrador',
-                        'Dirección' => 'Dirección',
-                        'Inventario' => 'Inventario',
-                    ])
-                    ->default('Usuario')
-                    ->required()    ,
+                Forms\Components\Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->multiple()
+                    ->preload()
+                    ->searchable()
+                    ->required(),
 
                 Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->required()
-                    ->maxLength(255),
+                    ->revealable()
+                    ->dehydrated(fn (?string $state): bool => filled($state))
+                    ->required(fn (string $operation): bool => $operation === 'create')
+                    ->afterStateHydrated(fn (Forms\Components\TextInput $component) => $component->state(null))
+                    ->maxLength(255),   
             ]);
     }
 
@@ -62,8 +61,10 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('role')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('roles.name')
+                    ->badge()
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()
                     ->sortable(),

@@ -15,6 +15,13 @@ class Eventos extends Model
         'area_id',
         'descripcion',
         'agenda',
+        'tipo',
+        'solicitante',
+        'operador',
+        'afluencia',
+        'fin_evento',
+        'requerimientos_tecnicos',
+        'requerimientos_sg',
     ];
     public function area(): BelongsTo { return $this->belongsTo(Area::class); }
 }

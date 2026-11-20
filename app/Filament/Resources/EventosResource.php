@@ -17,6 +17,11 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Schemas\Components\Section;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Schemas\Components\Grid;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 
 class EventosResource extends Resource
 {
@@ -28,20 +33,96 @@ class EventosResource extends Resource
     {
         return $schema
             ->schema([
-                Forms\Components\TextInput::make('nombre')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('area_id')
-                    ->relationship('area', 'nombre')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
-                Forms\Components\TextInput::make('descripcion')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\DateTimePicker::make('agenda')
-                    ->required(),
-            ]);
+            Section::make('Información general')
+                ->description('Datos principales para identificar el evento o solicitud.')
+                ->schema([
+                    Grid::make(2)
+                        ->schema([
+                            TextInput::make('nombre')
+                                ->label('Nombre del evento')
+                                ->required()
+                                ->maxLength(255),
+
+                            Select::make('tipo')
+                            ->label('Tipo')
+                            ->options([
+                                'Interno' => 'Interno',
+                                'Externo' => 'Externo',
+                            ])
+                            ->native(false)
+                            ->default('Externo')
+                            ->required(),
+
+                            Select::make('area_id')
+                                ->label('Área')
+                                ->relationship('area', 'nombre')
+                                ->searchable()
+                                ->preload()
+                                ->required(),
+
+                            TextInput::make('afluencia')
+                                ->label('Afluencia estimada')
+                                ->numeric()
+                                ->minValue(0)
+                                ->step(1)
+                                ->prefix('Personas:')
+                                ->default(0),
+                        ]),
+
+                    Textarea::make('descripcion')
+                        ->label('Notas')
+                        ->rows(2)
+                        ->required()
+                        ->maxLength(255),
+                ]),
+
+            Section::make('Programación y responsables')
+                ->schema([
+                    Grid::make(2)
+                        ->schema([
+                            DateTimePicker::make('agenda')
+                                ->label('Inicio evento')
+                                ->displayFormat('d/m/Y h:i A')
+                                ->format('Y-m-d H:i:s')
+                                ->native(false)
+                                ->required(),
+
+                            DateTimePicker::make('fin_evento')
+                                ->label('Fin evento')
+                                ->displayFormat('d/m/Y h:i A')
+                                ->format('Y-m-d H:i:s')
+                                ->native(false)
+                                ->afterOrEqual('agenda')
+                                ->required(),
+
+                            TextInput::make('solicitante')
+                                ->label('Solicitante')
+                                ->required()
+                                ->maxLength(255),
+
+                            TextInput::make('operador')
+                                ->label('Operador')
+                                ->required()
+                                ->maxLength(255),
+                        ]),
+                ]),
+
+            Section::make('Requerimientos')
+                ->schema([
+                    Grid::make(2)
+                        ->schema([
+                            Textarea::make('requerimientos_tecnicos')
+                                ->label('Requerimientos técnicos')
+                                ->rows(3)
+                                ->maxLength(255),
+
+                            Textarea::make('requerimientos_sg')
+                                ->label('Requerimientos SG')
+                                ->rows(3)
+                                ->maxLength(255),
+                        ]),
+                ]),
+        ]);
     }
 
     public static function table(Table $table): Table

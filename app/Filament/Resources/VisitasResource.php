@@ -33,10 +33,20 @@ class VisitasResource extends Resource
                     ->relationship('area', 'nombre')
                     ->searchable()
                     ->preload()
-                    ->required(),
+                    ->required()
+                    ->live()
+                    ->default(fn () => session('visitas.area_fija_id'))
+                    ->afterStateUpdated(function ($state): void {
+                        if (filled($state)) {
+                            session(['visitas.area_fija_id' => $state]);
+                        } else {
+                            session()->forget('visitas.area_fija_id');
+                        }
+                    }),
                 Forms\Components\TextInput::make('identificador')
                     ->maxLength(255)
-                    ->default(null),
+                    ->default(null)
+                    ->autofocus(),
             ]);
     }
 

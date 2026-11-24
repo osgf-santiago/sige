@@ -11,7 +11,7 @@ class CreateVisitas extends CreateRecord
     protected static string $resource = VisitasResource::class;
     protected function getRedirectUrl(): string
     {
-        return $this->getResource()::getUrl('index');
+        return $this->getResource()::getUrl('create');
 
     }
 }

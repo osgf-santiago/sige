@@ -13,7 +13,12 @@ class ListEventos extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\Action::make('agendaPorAreas')
+                ->label('Vista por áreas')
+                ->icon('heroicon-o-calendar-days')
+                ->url(EventosResource::getUrl('agenda-areas')),
+            Actions\CreateAction::make()
+            ->label('Nuevo evento'),
         ];
     }
 }

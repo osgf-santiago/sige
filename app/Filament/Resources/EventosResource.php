@@ -214,6 +214,7 @@ class EventosResource extends Resource
         return [
             'index' => Pages\ListEventos::route('/'),
             'create' => Pages\CreateEventos::route('/create'),
+            'agenda-areas' => Pages\AgendaPorAreas::route('/agenda-areas'),
             'edit' => Pages\EditEventos::route('/{record}/edit'),
         ];
     }

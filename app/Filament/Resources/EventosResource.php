@@ -22,6 +22,10 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Closure;
+use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Utilities\Get;
+use Illuminate\Support\Carbon;
 
 class EventosResource extends Resource
 {
@@ -82,17 +86,54 @@ class EventosResource extends Resource
                         ->schema([
                             DateTimePicker::make('agenda')
                                 ->label('Inicio evento')
-                                ->displayFormat('d/m/Y h:i A')
+                                ->displayFormat('d/m/Y H:i')
                                 ->format('Y-m-d H:i:s')
                                 ->native(false)
+                                ->seconds(false)
                                 ->required(),
 
                             DateTimePicker::make('fin_evento')
                                 ->label('Fin evento')
-                                ->displayFormat('d/m/Y h:i A')
+                                ->displayFormat('d/m/Y H:i')
                                 ->format('Y-m-d H:i:s')
                                 ->native(false)
+                                ->seconds(false)
                                 ->afterOrEqual('agenda')
+                                ->rule(function (Get $get, ?Eventos $record): Closure {
+                                    return function (string $attribute, mixed $value, Closure $fail) use ($get, $record): void {
+                                        $areaId = $get('area_id');
+                                        $inicio = $get('agenda');
+                                        $fin = $value;
+
+                                        if (blank($areaId) || blank($inicio) || blank($fin)) {
+                                            return;
+                                        }
+
+                                        $query = Eventos::query()
+                                            ->where('area_id', $areaId)
+                                            ->where('agenda', '<', $fin)
+                                            ->where('fin_evento', '>', $inicio);
+
+                                        if ($record?->getKey() !== null) {
+                                            $query->whereKeyNot($record->getKey());
+                                        }
+
+                                        $conflicto = $query->first();
+
+                                        if ($conflicto) {
+                                            $inicioFormato = Carbon::parse($conflicto->agenda)->format('d/m/Y H:i');
+                                            $finFormato = Carbon::parse($conflicto->fin_evento)->format('d/m/Y H:i');
+
+                                            Notification::make()
+                                                ->title('Conflicto de horario en el área')
+                                                ->body("El evento \"{$conflicto->nombre}\" ya ocupa esta área de {$inicioFormato} a {$finFormato}.")
+                                                ->danger()
+                                                ->send();
+
+                                            $fail('Ya existe un evento agendado en esta área que se empalma con el horario seleccionado.');
+                                        }
+                                    };
+                                })
                                 ->required(),
 
                             TextInput::make('solicitante')
